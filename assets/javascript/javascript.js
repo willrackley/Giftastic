@@ -12,9 +12,22 @@ function showButtons(){
     }
 }
 
+function remakeButtons(){
+    var inputText = $('#sportInput').val().toUpperCase().trim();
+    topics.push(inputText);
+    $("#topicButtons").empty();
+   for(var i=0; i < topics.length; i++){
+    var button = $("<button>");
+    button.addClass("sportButtons");
+    button.attr("data-name", topics[i]);
+    button.text(topics[i]);
+    $("#topicButtons").append(button); 
+   }
+}
+
 showButtons();
 
-$("button").on("click", function() {
+$(".sportButtons").on("click", function() {
     $("#gifBox").empty();
     var topicName = $(this).attr("data-name")
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
@@ -32,9 +45,11 @@ $("button").on("click", function() {
                 var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
                 var gifImage= $("<img>");
                 gifImage.addClass("gif");
+                gifImage.addClass("figure-img");
                 gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
-                newDiv.append(ratingParagraph);
+                newDiv.addClass("float-left");
                 newDiv.append(gifImage);
+                newDiv.append(ratingParagraph);
                 $("#gifBox").prepend(newDiv);
             }
             $(".gif").on("click", function() {
@@ -54,7 +69,13 @@ $("button").on("click", function() {
         
 });
 
+$("#submitButton").on("click", function(){
+    event.preventDefault();
+    $("#gifBox").empty();
+    remakeButtons();
+console.log(topics);
 
+});
 
 
 });
