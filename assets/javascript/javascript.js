@@ -1,4 +1,6 @@
-var topics = ["NFL", "NBA", "MlB", "CFB", "WNBA", "NASCAR", "TENNIS", "SOCCER"];
+$(document).ready(function() {
+
+var topics = ["NFL", "NBA", "MLB", "CFB", "WNBA", "NASCAR", "TENNIS", "SOCCER"];
 
 function showButtons(){
     for(var i=0; i < topics.length; i++){
@@ -22,19 +24,37 @@ $("button").on("click", function() {
         url: queryURL,
         method: "GET"
         }).then(function(response) {
-            console.log(queryURL);
 
             var gifResults = response.data;
             for (var i = 0; i < gifResults.length; i++) {
+
                 var newDiv = $("<div>");
-                var ratingParagraph = $("<p>").text("Rating: " + response.data[i].rating);
+                var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
                 var gifImage= $("<img>");
-                gifImage.attr("src", gifResults[i].images.fixed_height.url);
+                gifImage.addClass("gif");
+                gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
                 newDiv.append(ratingParagraph);
                 newDiv.append(gifImage);
                 $("#gifBox").prepend(newDiv);
             }
-        })
-    
+            $(".gif").on("click", function() {
+               
+                var source = $(this).attr("src");
+                for(var i = 0; i < gifResults.length; i++) {
+                if(source === gifResults[i].images.fixed_height_still.url){
+                    $(this).attr("src", gifResults[i].images.fixed_height.url);
+                }
+                if(source === gifResults[i].images.fixed_height.url){
+                    $(this).attr("src", gifResults[i].images.fixed_height_still.url);
+                }
+                }
+            });
+    });
+
+        
 });
 
+
+
+
+});
