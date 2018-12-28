@@ -37,6 +37,10 @@ function remakeButtons(){
                     var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
                     var titleParagraph = $("<p>").text(gifResults[i].title);
                     var gifImage= $("<img>");
+                    var downloadButton = $("<button>");
+                    downloadButton.addClass("downloadButton mb-2");
+                    downloadButton.attr("data-name", gifResults[i].title);
+                    downloadButton.text("Download");
                     gifImage.addClass("gif");
                     titleParagraph.addClass("gifTitle pt-2 pr-1")
                     gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
@@ -44,6 +48,7 @@ function remakeButtons(){
                     newDiv.append(titleParagraph);
                     newDiv.append(gifImage);
                     newDiv.append(ratingParagraph);
+                    newDiv.append(downloadButton);
                     $("#gifBox").prepend(newDiv);
 
                     if(gifResults[i].title === ""){
@@ -76,6 +81,10 @@ function remakeButtons(){
                             var newRatingParagraph = $("<p>").text("Rating: " + newGifResults[i].rating);
                             var newTitleParagraph = $("<p>").text(newGifResults[i].title);
                             var newGifImage= $("<img>");
+                            var newDownloadButton = $("<button>");
+                            newDownloadButton.addClass("newDownloadButton mb-2");
+                            newDownloadButton.attr("data-name", newGifResults[i].title);
+                            newDownloadButton.text("Download");
                             newTitleParagraph.addClass("gifTitle pt-2 pr-1")
                             newGifImage.addClass("gif");
                             newGifImage.attr("src", newGifResults[i].images.fixed_height_still.url);
@@ -83,6 +92,7 @@ function remakeButtons(){
                             newGifDiv.append(newTitleParagraph);
                             newGifDiv.append(newGifImage);
                             newGifDiv.append(newRatingParagraph);
+                            newGifDiv.append(newDownloadButton);
                             $("#gifBox").append(newGifDiv);
 
                             if(newGifResults[i].title === ""){
@@ -145,6 +155,10 @@ $(".sportButtons").on("click", function() {
 
                 var newDiv = $("<div>");
                 var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
+                var downloadButton = $("<button>");
+                downloadButton.addClass("downloadButton mb-2");
+                downloadButton.attr("data-name", gifResults[i].title);
+                downloadButton.text("Download");
                 var titleParagraph = $("<p>").text(gifResults[i].title);
                 var gifImage= $("<img>");
                 gifImage.addClass("gif");
@@ -154,6 +168,7 @@ $(".sportButtons").on("click", function() {
                 newDiv.append(titleParagraph);
                 newDiv.append(gifImage);
                 newDiv.append(ratingParagraph);
+                newDiv.append(downloadButton);
                 $("#gifBox").prepend(newDiv);
 
                 if(gifResults[i].title === ""){
@@ -185,6 +200,10 @@ $(".sportButtons").on("click", function() {
                         for (var i = limit-10; i < limit; i++) {
                             var newGifDiv = $("<div>");
                             var newRatingParagraph = $("<p>").text("Rating: " + newGifResults[i].rating);
+                            var newDownloadButton = $("<button>");
+                            newDownloadButton.addClass("newDownloadButton mb-2");
+                            newDownloadButton.attr("data-name", newGifResults[i].title);
+                            newDownloadButton.text("Download");
                             var newTitleParagraph = $("<p>").text(newGifResults[i].title);
                             var newGifImage= $("<img>");
                             newTitleParagraph.addClass("gifTitle pt-2 pr-1")
@@ -194,6 +213,7 @@ $(".sportButtons").on("click", function() {
                             newGifDiv.append(newTitleParagraph);
                             newGifDiv.append(newGifImage);
                             newGifDiv.append(newRatingParagraph);
+                            newGifDiv.append(newDownloadButton);
                             $("#gifBox").append(newGifDiv);
 
                             if(newGifResults[i].title === ""){
