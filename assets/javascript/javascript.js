@@ -2,6 +2,12 @@ $(document).ready(function() {
 
 var topics = ["NFL", "NBA", "MLB", "CFB", "WNBA", "NASCAR", "TENNIS", "SOCCER"];
 var limit = 10;
+var favArray = [];
+var favClassCtr = 0;
+var divClassCtr = 0;
+var stringDivClassCtr;
+var stringFavCtr;
+
 
 function showButtons(){
     for(var i=0; i < topics.length; i++){
@@ -40,7 +46,7 @@ function remakeButtons(){
                     var downloadButton = $("<button>");
                     downloadButton.addClass("downloadButton mb-2");
                     downloadButton.attr("data-name", gifResults[i].title);
-                    downloadButton.text("Download");
+                    downloadButton.text("♡");
                     gifImage.addClass("gif");
                     titleParagraph.addClass("gifTitle pt-2 pr-1")
                     gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
@@ -84,7 +90,7 @@ function remakeButtons(){
                             var newDownloadButton = $("<button>");
                             newDownloadButton.addClass("newDownloadButton mb-2");
                             newDownloadButton.attr("data-name", newGifResults[i].title);
-                            newDownloadButton.text("Download");
+                            newDownloadButton.text("♡");
                             newTitleParagraph.addClass("gifTitle pt-2 pr-1")
                             newGifImage.addClass("gif");
                             newGifImage.attr("src", newGifResults[i].images.fixed_height_still.url);
@@ -135,6 +141,7 @@ function remakeButtons(){
     $('#sportInput').val('');
 }
 
+
 showButtons();
 
 $(".sportButtons").on("click", function() {
@@ -149,27 +156,32 @@ $(".sportButtons").on("click", function() {
         url: queryURL,
         method: "GET"
         }).then(function(response) {
-
+            
             var gifResults = response.data;
             for (var i = 0; i < limit; i++) {
-
+                divClassCtr++;
+                favClassCtr++;
                 var newDiv = $("<div>");
                 var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
                 var downloadButton = $("<button>");
                 downloadButton.addClass("downloadButton mb-2");
                 downloadButton.attr("data-name", gifResults[i].title);
-                downloadButton.text("Download");
+                downloadButton.attr("counter", favClassCtr.toString());
+                downloadButton.text("♡");
                 var titleParagraph = $("<p>").text(gifResults[i].title);
                 var gifImage= $("<img>");
                 gifImage.addClass("gif");
                 titleParagraph.addClass("gifTitle pt-2 pr-1")
                 gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
-                newDiv.addClass("float-left border m-1");
+                newDiv.addClass("float-left border m-1 ");
+                newDiv.attr("counter", divClassCtr.toString());
                 newDiv.append(titleParagraph);
                 newDiv.append(gifImage);
                 newDiv.append(ratingParagraph);
                 newDiv.append(downloadButton);
-                $("#gifBox").prepend(newDiv);
+                favArray.push(newDiv);
+                $("#gifBox").append(newDiv);
+
 
                 if(gifResults[i].title === ""){
                     titleParagraph = $("<p>").text("**No Title Available**");
@@ -177,9 +189,21 @@ $(".sportButtons").on("click", function() {
                     newDiv.prepend(titleParagraph);
                     
                  }
+                 
             }
-            
-            
+
+            $(".downloadButton").one("click", function() {
+                console.log(favArray);
+                var ctrAttr = $(this).attr("counter");
+                for(var i=0; i < limit; i++){
+                    if(ctrAttr === favArray[i].attr("counter")){
+                    var copyDiv = favArray[i].clone();
+                    $("#favorites").append(copyDiv);
+               }
+               
+           }
+            });
+   
             //Button to add more Gifs
             var button = $("<button>");
             button.addClass("addMoreGifs");
@@ -203,7 +227,7 @@ $(".sportButtons").on("click", function() {
                             var newDownloadButton = $("<button>");
                             newDownloadButton.addClass("newDownloadButton mb-2");
                             newDownloadButton.attr("data-name", newGifResults[i].title);
-                            newDownloadButton.text("Download");
+                            newDownloadButton.text("♡");
                             var newTitleParagraph = $("<p>").text(newGifResults[i].title);
                             var newGifImage= $("<img>");
                             newTitleParagraph.addClass("gifTitle pt-2 pr-1")
