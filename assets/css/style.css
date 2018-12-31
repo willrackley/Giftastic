@@ -1,3 +1,25 @@
+ #logoImg {
+   width: 300px;
+   margin-top: -13px;
+   margin-bottom: -13px;
+}
+
+.navbar {
+  background: #F3D306;  
+}
+
+#topicContainer {
+    background: #000000;
+}
+
+#getStartedText{
+    color:#868686;
+}
+
+#submitButton {
+    background: #000000;
+}
+
 .sportButtons {
     margin-right: 10px;
     margin-top: 5px;

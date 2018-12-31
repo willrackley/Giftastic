@@ -13,8 +13,18 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div id="topicButtons" class="p-4 mb-3 text-center"></div>
+    <nav class="navbar ">
+        <a class="navbar-brand mx-auto" href="#">
+            <img id="logoImg" src="logo.png" alt="">
+        </a>
+     </nav>
+
+    <div class="container-fluid " id="topicContainer">
+        <div id="topicButtons" class="p-4 mb-3 text-center "></div>
+    </div>
+
+    <div class="container-fluid text-center">
+        <h2 id="getStartedText">Click a topic to get started</h2>
     </div>
 
     <div class="container-fluid ">
@@ -22,7 +32,7 @@
                 <div class='col-lg-3 col-md-3 col-sm-12'>
                         <form>
                             <div class="form-group">
-                                <label for="addASport">Add a Sport</label>
+                                <label for="addASport"><h3>Add a Sport</h3></label>
                                 <input type="text" class="form-control" id="sportInput" placeholder="ex. swimming">
                             </div>
                             <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
