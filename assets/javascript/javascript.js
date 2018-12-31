@@ -230,7 +230,7 @@ $(".sportButtons").on("click", function() {
                 gifImage.addClass("gif");
                 titleParagraph.addClass("gifTitle pt-2 pr-1")
                 gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
-                newDiv.addClass("float-left border m-1 ");
+                newDiv.addClass("float-left border m-1");
                 newDiv.attr("counter", divClassCtr);
                 newDiv.append(titleParagraph);
                 newDiv.append(gifImage);
@@ -245,7 +245,7 @@ $(".sportButtons").on("click", function() {
                     newDiv.prepend(titleParagraph);
                  }
             }
-
+            console.log(favArray);
             $(".gif").on("click", function() {
                 var source = $(this).attr("src");
                 for(var i = 0; i < limit; i++) {
@@ -260,7 +260,7 @@ $(".sportButtons").on("click", function() {
 
             $(".downloadButton").one("click", function() {
                 var ctrAttr = $(this).attr("counter");
-                for(var i=0; i < limit; i++){
+                for(var i=0; i < favArray.length; i++){
                     if(ctrAttr === favArray[i].attr("counter")){
                     var copyDiv = favArray[i].clone();
                     $("#favorites").append(copyDiv);
@@ -343,7 +343,7 @@ $(".sportButtons").on("click", function() {
 
                 $(".downloadButton").one("click", function() {
                     var newCtrAttr = $(this).attr("newcounter");
-                    for(var i=0; i < limit; i++){
+                    for(var i=0; i < favArray.length; i++){
                     if(newCtrAttr === favArray[i].attr("newcounter")){
                         var newCopyDiv = favArray[i].clone();
                     $("#favorites").append(newCopyDiv);

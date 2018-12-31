@@ -1,23 +1,43 @@
  #logoImg {
-   width: 300px;
-   margin-top: -13px;
-   margin-bottom: -13px;
+    width: 300px;
+    margin-top: -13px;
+    margin-bottom: -13px;
 }
 
 .navbar {
-  background: #F3D306;  
+    background: #F3D306;  
 }
 
+body {
+    font-family: 'Montserrat', sans-serif;
+}
 #topicContainer {
     background: #000000;
 }
 
+.downloadButton:focus {
+    color: #da4141;
+}
+
+#gifBox {
+   /* border: 3px solid #F3D306;  */
+    padding: 10px;
+    background: #cfcece;
+}
+
 #getStartedText{
     color:#868686;
+    padding: 10px;
+}
+
+.favoritesDiv {
+    border: 3px solid #8f8f8f;
+    padding: 10px;
 }
 
 #submitButton {
     background: #000000;
+    margin-bottom: 10px;
 }
 
 .sportButtons {
