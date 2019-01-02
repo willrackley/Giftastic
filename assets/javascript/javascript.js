@@ -97,17 +97,36 @@ function remakeButtons(){
     
                 $(".downloadButton").one("click", function() {
                     var ctrAttr = $(this).attr("counter");
-                    console.log(favArray);
-                    console.log(limit);
+                    var favDiv = $("<div>");
+                    if(favGifs.length > 0){
+                        favGifs.splice(0,1);
+                    }
                     for(var i=0; i < favArray.length; i++){
                         if(ctrAttr === favArray[i].attr("counter")){
-                            console.log("yup");
                         var copyDiv = favArray[i].clone();
-                        $("#favorites").append(copyDiv);
+                        $(copyDiv).attr("id", "animateFavGif");
+                        favDiv.append(copyDiv);
+                        favGifs.push(favDiv);
+                        $("#favorites").prepend(favGifs);
                         }
-                     }
-                     
-                    }); 
+                    } 
+                    $("#animateFavGif").on("click", function() {  
+                        console.log($(this));       
+                        var secondNode = $(this.childNodes[2]).attr("src");
+                        var firstNode = $(this.childNodes[1]).attr("src");
+                        for(var i = 0; i < gifResults.length; i++) {
+                        if(firstNode === gifResults[i].images.fixed_height_still.url || secondNode === gifResults[i].images.fixed_height_still.url){
+                            $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height.url);
+                            $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height.url);
+                        }
+                        if(firstNode === gifResults[i].images.fixed_height.url || secondNode === gifResults[i].images.fixed_height.url){
+                            $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
+                            $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height_still.url);
+                        }
+                        }//console.log(favSource);
+                    });
+                });
+                
                 if(moreGifsArray.length === 0){
                     moreGifsArray.push(topicName);
                 
@@ -186,8 +205,11 @@ $(".sportButtons").on("click", function() {
                 }
             });
 
+           
+
             $(".downloadButton").one("click", function() {
                 var ctrAttr = $(this).attr("counter");
+                var favDiv = $("<div>");
                 if(favGifs.length > 0){
                     favGifs.splice(0,1);
                 }
@@ -195,36 +217,28 @@ $(".sportButtons").on("click", function() {
                     if(ctrAttr === favArray[i].attr("counter")){
                     var copyDiv = favArray[i].clone();
                     $(copyDiv).attr("id", "animateFavGif");
-                    favGifs.push(copyDiv);
-                    $("#favorites").append(favGifs);
+                    favDiv.append(copyDiv);
+                    favGifs.push(favDiv);
+                    $("#favorites").prepend(favGifs);
                     }
                 } 
-                $("#animateFavGif").on("click", function() {          
-                    var favSource = $(this.childNodes[2]).attr("src");
+                $("#animateFavGif").on("click", function() {  
+                    console.log($(this));       
+                    var secondNode = $(this.childNodes[2]).attr("src");
+                    var firstNode = $(this.childNodes[1]).attr("src");
                     for(var i = 0; i < gifResults.length; i++) {
-                    if(favSource === gifResults[i].images.fixed_height_still.url){
+                    if(firstNode === gifResults[i].images.fixed_height_still.url || secondNode === gifResults[i].images.fixed_height_still.url){
                         $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height.url);
+                        $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height.url);
                     }
-                    if(favSource === gifResults[i].images.fixed_height.url){
+                    if(firstNode === gifResults[i].images.fixed_height.url || secondNode === gifResults[i].images.fixed_height.url){
                         $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
+                        $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height_still.url);
                     }
-                    }console.log(favSource);
+                    }//console.log(favSource);
                 });
             });
 
-            $("#animateFavGif").on("click", function() {          
-                var favSource = $(this.childNodes[2]).attr("src");
-                for(var i = 0; i < gifResults.length; i++) {
-                if(favSource === gifResults[i].images.fixed_height_still.url){
-                    $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height.url);
-                }
-                if(favSource === gifResults[i].images.fixed_height.url){
-                    $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
-                }
-                }console.log(this);
-            });
-
-            
 
             //code for setting up an array for when we add more gifs to the original 10 
             if(moreGifsArray.length === 0){
@@ -235,7 +249,7 @@ $(".sportButtons").on("click", function() {
                 moreGifsArray.push(topicName);
             
             }
-
+            
         });     
     });
 
@@ -291,6 +305,7 @@ $(".addMoreGifs").on("click", function() {
                     }
                 });
                 $(".newdownloadButton").one("click", function() {
+                    var addedFavDiv = $("<div>");
                     var newCtrAttr = $(this).attr("newcounter");
                     if(favGifs.length > 0){
                         favGifs.splice(0,1);
@@ -299,27 +314,31 @@ $(".addMoreGifs").on("click", function() {
                     if(newCtrAttr === favArray[i].attr("newcounter")){
                         var newCopyDiv = favArray[i].clone();
                         $(newCopyDiv).attr("id", "addedAnimateFavGif");
-                        favGifs.push(newCopyDiv);
-                        $("#favorites").append(favGifs);
+                        addedFavDiv.append(newCopyDiv);
+                        favGifs.push(addedFavDiv);
+                        $("#favorites").prepend(favGifs);
                    }
                 }
                 console.log(favGifs);
                 $("#addedAnimateFavGif").on("click", function() {
-                    var addedFavSource = $(this.childNodes[1]).attr("src");
-                    //console.log(addedGifResults);
+                    var addedSecondNode = $(this.childNodes[2]).attr("src");
+                    var addedFirstNode = $(this.childNodes[1]).attr("src");
                     for(var i = 0; i < addedGifResults.length; i++) {
-                    if(addedFavSource === addedGifResults[i].images.fixed_height_still.url){
+                    if(addedFirstNode === addedGifResults[i].images.fixed_height_still.url || addedSecondNode === addedGifResults[i].images.fixed_height_still.url){
+                        $(this.childNodes[2]).attr("src", addedGifResults[i].images.fixed_height.url);
                         $(this.childNodes[1]).attr("src", addedGifResults[i].images.fixed_height.url);
                     }
-                    if(addedFavSource === addedGifResults[i].images.fixed_height.url){
+                    if(addedFirstNode === addedGifResults[i].images.fixed_height.url || addedSecondNode === addedGifResults[i].images.fixed_height.url){
+                        $(this.childNodes[2]).attr("src", addedGifResults[i].images.fixed_height_still.url);
                         $(this.childNodes[1]).attr("src", addedGifResults[i].images.fixed_height_still.url);
                     }
-                    }
+                    }//console.log(favSource);
                 });
               });
             });
         });
 
+        
 
 $("#submitButton").on("click", function(){
     event.preventDefault();
