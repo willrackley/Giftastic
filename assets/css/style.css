@@ -49,6 +49,11 @@ body {
     margin-top: 5px;
 }
 
+.carButtons {
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
 .addMoreGifs{
     width: 150px;
     margin-left: 4px;
