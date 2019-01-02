@@ -63,16 +63,23 @@ function remakeButtons(){
                     downloadButton.attr("counter", favClassCtr);
                     downloadButton.text("♡");
                     var titleParagraph = $("<p>").text(gifResults[i].title);
-                    var gifImage= $("<img>");
+                    var gifImage = $("<img>");
+                    var downloadGif = $("<a>");
                     gifImage.addClass("gif");
                     titleParagraph.addClass("gifTitle pt-2 pr-1")
                     gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
-                    newDiv.addClass("float-left border m-1 ");
+                    downloadGif.attr("download");
+                    downloadGif.addClass("ml-3");
+                    downloadGif.attr("target", "_blank");
+                    downloadGif.attr("href", gifResults[i].images.fixed_height.url);
+                    downloadGif.text("download");
+                    newDiv.addClass("float-left border m-1");
                     newDiv.attr("counter", divClassCtr);
                     newDiv.append(titleParagraph);
                     newDiv.append(gifImage);
                     newDiv.append(ratingParagraph);
                     newDiv.append(downloadButton);
+                    newDiv.append(downloadGif);
                     favArray.push(newDiv);
                     $("#gifBox").append(newDiv);
     
@@ -98,6 +105,7 @@ function remakeButtons(){
                 $(".downloadButton").one("click", function() {
                     var ctrAttr = $(this).attr("counter");
                     var favDiv = $("<div>");
+                    var deleteFavButton = $("<button>");
                     if(favGifs.length > 0){
                         favGifs.splice(0,1);
                     }
@@ -105,7 +113,11 @@ function remakeButtons(){
                         if(ctrAttr === favArray[i].attr("counter")){
                         var copyDiv = favArray[i].clone();
                         $(copyDiv).attr("id", "animateFavGif");
+                        deleteFavButton.text("X");
+                        deleteFavButton.attr("id", "deleteFavItem");
+                        deleteFavButton.addClass("float-left border-left-0");
                         favDiv.append(copyDiv);
+                        favDiv.append(deleteFavButton);
                         favGifs.push(favDiv);
                         $("#favorites").prepend(favGifs);
                         }
@@ -123,10 +135,15 @@ function remakeButtons(){
                             $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
                             $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height_still.url);
                         }
-                        }//console.log(favSource);
+                        }
+                    });
+                    $("#deleteFavItem").on("click", function(){
+                        console.log(this);
+                        favDiv.remove();
                     });
                 });
-                
+    
+
                 if(moreGifsArray.length === 0){
                     moreGifsArray.push(topicName);
                 
@@ -172,16 +189,23 @@ $(".sportButtons").on("click", function() {
                 downloadButton.attr("counter", favClassCtr);
                 downloadButton.text("♡");
                 var titleParagraph = $("<p>").text(gifResults[i].title);
-                var gifImage= $("<img>");
+                var gifImage = $("<img>");
+                var downloadGif = $("<a>");
                 gifImage.addClass("gif");
                 titleParagraph.addClass("gifTitle pt-2 pr-1")
                 gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
+                downloadGif.attr("download");
+                downloadGif.addClass("ml-3");
+                downloadGif.attr("target", "_blank");
+                downloadGif.attr("href", gifResults[i].images.fixed_height.url);
+                downloadGif.text("download");
                 newDiv.addClass("float-left border m-1");
                 newDiv.attr("counter", divClassCtr);
                 newDiv.append(titleParagraph);
                 newDiv.append(gifImage);
                 newDiv.append(ratingParagraph);
                 newDiv.append(downloadButton);
+                newDiv.append(downloadGif);
                 favArray.push(newDiv);
                 $("#gifBox").append(newDiv);
 
@@ -205,11 +229,10 @@ $(".sportButtons").on("click", function() {
                 }
             });
 
-           
-
             $(".downloadButton").one("click", function() {
                 var ctrAttr = $(this).attr("counter");
                 var favDiv = $("<div>");
+                var deleteFavButton = $("<button>");
                 if(favGifs.length > 0){
                     favGifs.splice(0,1);
                 }
@@ -217,7 +240,11 @@ $(".sportButtons").on("click", function() {
                     if(ctrAttr === favArray[i].attr("counter")){
                     var copyDiv = favArray[i].clone();
                     $(copyDiv).attr("id", "animateFavGif");
+                    deleteFavButton.text("X");
+                    deleteFavButton.attr("id", "deleteFavItem");
+                    deleteFavButton.addClass("float-left border-left-0");
                     favDiv.append(copyDiv);
+                    favDiv.append(deleteFavButton);
                     favGifs.push(favDiv);
                     $("#favorites").prepend(favGifs);
                     }
@@ -235,7 +262,11 @@ $(".sportButtons").on("click", function() {
                         $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
                         $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height_still.url);
                     }
-                    }//console.log(favSource);
+                    }
+                });
+                $("#deleteFavItem").on("click", function(){
+                    console.log(this);
+                    favDiv.remove();
                 });
             });
 
@@ -251,7 +282,7 @@ $(".sportButtons").on("click", function() {
             }
             
         });     
-    });
+});
 
 $(".addMoreGifs").on("click", function() {    
         limit = limit + 10;
@@ -269,6 +300,7 @@ $(".addMoreGifs").on("click", function() {
                     var newDiv = $("<div>");
                     var ratingParagraph = $("<p>").text("Rating: " + addedGifResults[i].rating);
                     var downloadButton = $("<button>");
+                    var newDownloadGif = $("<a>");
                     downloadButton.addClass("newdownloadButton mb-2");
                     downloadButton.attr("data-name", addedGifResults[i].title);
                     downloadButton.attr("newcounter", favClassCtr);
@@ -278,12 +310,18 @@ $(".addMoreGifs").on("click", function() {
                     gifImage.addClass("newGif");
                     titleParagraph.addClass("gifTitle pt-2 pr-1")
                     gifImage.attr("src", addedGifResults[i].images.fixed_height_still.url);
+                    newDownloadGif.attr("download");
+                    newDownloadGif.addClass("ml-3");
+                    newDownloadGif.attr("target", "_blank");
+                    newDownloadGif.attr("href", addedGifResults[i].images.fixed_height.url);
+                    newDownloadGif.text("download");
                     newDiv.addClass("float-left border m-1");
                     newDiv.attr("newcounter", divClassCtr);
                     newDiv.append(titleParagraph);
                     newDiv.append(gifImage);
                     newDiv.append(ratingParagraph);
                     newDiv.append(downloadButton);
+                    newDiv.append(newDownloadGif);
                     favArray.push(newDiv);
                     $("#gifBox").append(newDiv);
         
@@ -307,6 +345,7 @@ $(".addMoreGifs").on("click", function() {
                 $(".newdownloadButton").one("click", function() {
                     var addedFavDiv = $("<div>");
                     var newCtrAttr = $(this).attr("newcounter");
+                    var deleteFavButton = $("<button>");
                     if(favGifs.length > 0){
                         favGifs.splice(0,1);
                     }
@@ -314,12 +353,16 @@ $(".addMoreGifs").on("click", function() {
                     if(newCtrAttr === favArray[i].attr("newcounter")){
                         var newCopyDiv = favArray[i].clone();
                         $(newCopyDiv).attr("id", "addedAnimateFavGif");
+                        deleteFavButton.text("X");
+                        deleteFavButton.attr("id", "deleteFavItem");
+                        deleteFavButton.addClass("float-left border-left-0");
                         addedFavDiv.append(newCopyDiv);
+                        addedFavDiv.append(deleteFavButton);
                         favGifs.push(addedFavDiv);
                         $("#favorites").prepend(favGifs);
                    }
                 }
-                console.log(favGifs);
+                
                 $("#addedAnimateFavGif").on("click", function() {
                     var addedSecondNode = $(this.childNodes[2]).attr("src");
                     var addedFirstNode = $(this.childNodes[1]).attr("src");
@@ -332,14 +375,16 @@ $(".addMoreGifs").on("click", function() {
                         $(this.childNodes[2]).attr("src", addedGifResults[i].images.fixed_height_still.url);
                         $(this.childNodes[1]).attr("src", addedGifResults[i].images.fixed_height_still.url);
                     }
-                    }//console.log(favSource);
+                    }
+                });
+                $("#deleteFavItem").on("click", function(){
+                    console.log(this);
+                    addedFavDiv.remove();
                 });
               });
             });
-        });
-
-        
-
+});
+    
 $("#submitButton").on("click", function(){
     event.preventDefault();
     remakeButtons();

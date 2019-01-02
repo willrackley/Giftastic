@@ -19,6 +19,10 @@ body {
     color: #da4141;
 }
 
+.newdownloadButton:focus {
+    color: #da4141;
+}
+
 #gifBox {
    /* border: 3px solid #F3D306;  */
     padding: 10px;
