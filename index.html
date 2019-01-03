@@ -14,30 +14,34 @@
 </head>
 
 <body>
+    <!--Navbar that holds the heading logo and main menu button-->
     <nav class="navbar ">
         <a class="navbar-brand mx-auto" href="#">
             <img id="logoImg" src="logo.png" alt="">
-        </a>
+        </a>   
+        <button class="btn-outline-light float-right" id="mainMenu">Main Menu</button>
      </nav>
 
     <div class="container-fluid " id="topicContainer">
-        <div id="topicButtons" class="p-4 mb-5 text-center "> <button class="btn-outline-light" id="topicSports">SPORTS</button> <button class="btn-outline-light" id="topicCars">CARS</button></div>
+        <div id="topicButtons" class="p-4 mb-5 text-center"> <button class="btn-outline-light " id="topicSports">SPORTS</button> <button class="btn-outline-light" id="topicCars">CARS</button><button class="btn-outline-light" id="topicPets">PETS</button> </div>
+        
     </div>
 
+    <!--these divs hold the gifs,form,and button to add more gifs to the screen-->
     <div class="container picAndForm">
         <div class="row flex-sm-row-reverse mb-3">
-                <div class='col-lg-3 col-md-3 col-sm-12'>
-                        <form class="form">
-                            <div class="form-group">
-                                <label for="addASport"><h3 Id="formHeading">Add a Sport</h3></label>
-                                <input type="text" class="form-control" id="sportInput">
-                            </div>
-                            <button type="submit" class="btn btn-primary submitSportsButton" >Submit</button>
-                            <button type="submit" class="btn btn-primary submitCarsButton" >Submit</button>
-                        </form>
-                </div>
+            <div class='col-lg-3 col-md-3 col-sm-12'>
+                <form class="form mb-3">
+                    <div class="form-group">
+                        <label for="addASport"><h3 Id="formHeading">Add a Sport</h3></label>
+                        <input type="text" class="form-control" id="sportInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary submitSportsButton" >Submit</button>
+                </form>
+            </div>
             <div class="col-lg-9 col-md-9 col-sm-12" id="gifBox">
-                <h2 id="getStartedText">Click a topic to get started</h2>
+                <h2 id="getStartedText">Click a Category to get started <br> -Choose from a subcategory <br> -Click on the images to view the gif <br> -Have a Blast!
+                </h2>
             </div>
         </div>
             <div class="row mb-3">
@@ -52,7 +56,6 @@
                     <div id="favorites"></div>
                 </div>
             </div>
-        
     </div>
 
   

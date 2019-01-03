@@ -2,33 +2,48 @@ $(document).ready(function() {
 
 var sports = ["NFL", "NBA", "MLB", "CFB", "WNBA", "NASCAR", "TENNIS", "SOCCER"];
 var cars = ["MERCEDES-BENZ", "AUDI", "TOYOTA", "LEXUS", "FERARI", "FORD"];
+var pets = ["DOG", "CAT", "BIRD", "SNAKE"];
 var limit = 10;
 var favArray = [];
 var moreGifsArray = [];
 var favGifs = [];
 var favClassCtr = 0;
 var divClassCtr = 0;
-var stringDivClassCtr;
-var stringFavCtr;
 
+//-----FUNCTIONS-----//
 function showCarButtons(){
+    sports = [];
+    pets = [];
     for(var i=0; i < cars.length; i++){
         var button = $("<button>");
         button.addClass("carButtons btn-outline-light");
         button.attr("data-name", cars[i]);
         button.text(cars[i]);
         $("#topicButtons").append(button);
-        
     }
 }
+
 function showSportsButtons(){
+    pets = [];
+    cars = [];
     for(var i=0; i < sports.length; i++){
         var button = $("<button>");
         button.addClass("sportButtons btn-outline-light");
         button.attr("data-name", sports[i]);
         button.text(sports[i]);
         $("#topicButtons").append(button);
-        
+    }
+}
+
+function showPetsButtons(){
+    sports = [];
+    cars = [];
+    for(var i=0; i < pets.length; i++){
+        var button = $("<button>");
+        button.addClass("petsButtons btn-outline-light");
+        button.attr("data-name", pets[i]);
+        button.text(pets[i]);
+        $("#topicButtons").append(button);
     }
 }
 
@@ -36,24 +51,19 @@ function addMoreGifsButton(){
     var button = $("<button>");
     button.addClass("addMoreGifs");
     button.text("10 more gifs");
-    $("#addMoreButtonRow").html(button);
-
-
-    
+    $("#addMoreButtonRow").html(button);   
 }
 
 function remakeSportsButtons(){
-
     var inputText = $('#sportInput').val().toUpperCase().trim();
-    if(inputText === ""){
-        
+    if(inputText === ""){    
     } else {
     sports.push(inputText);
-    $('#topicButtons').empty();
-    $("#addMoreButtonRow").show();
+    $('.sportButtons').remove();
     showSportsButtons();
-   
+    
     $(".sportButtons").on("click", function() {
+        $("#addMoreButtonRow").show();
         $("#gifBox").empty();
         $("#getStartedText").empty();
         limit = 10;
@@ -170,22 +180,152 @@ function remakeSportsButtons(){
         });
         
     });
-    $('#sportInput').val('');
+
 }
 }
 
 function remakeCarsButtons(){
-
+    
     var inputText = $('#sportInput').val().toUpperCase().trim();
     if(inputText === ""){
         
     } else {
     cars.push(inputText);
-    $('#topicButtons').empty();
-    $("#addMoreButtonRow").show();
+    $('.carButtons').remove();
     showCarButtons();
-   
+    
     $(".carButtons").on("click", function() {
+        $("#addMoreButtonRow").show();
+        $("#gifBox").empty();
+        $("#getStartedText").empty();
+        limit = 10;
+        var topicName = $(this).attr("data-name")
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+            topicName + "&api_key=17HlEsY0GKfVxvXvmi1HZw2RI94pGhFc&limit="+ limit;
+    
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+            }).then(function(response) {
+                
+                var gifResults = response.data;
+                for (var i = 0; i < limit; i++) {
+                    divClassCtr++;
+                    favClassCtr++;
+                    var newDiv = $("<div>");
+                    var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
+                    var downloadButton = $("<button>");
+                    downloadButton.addClass("downloadButton mb-2");
+                    downloadButton.attr("data-name", gifResults[i].title);
+                    downloadButton.attr("counter", favClassCtr);
+                    downloadButton.text("♡");
+                    var titleParagraph = $("<p>").text(gifResults[i].title);
+                    var gifImage = $("<img>");
+                    var downloadGif = $("<a>");
+                    gifImage.addClass("gif");
+                    titleParagraph.addClass("gifTitle pt-2 pr-1")
+                    gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
+                    downloadGif.attr("download");
+                    downloadGif.addClass("ml-3");
+                    downloadGif.attr("target", "_blank");
+                    downloadGif.attr("href", gifResults[i].images.fixed_height.url);
+                    downloadGif.text("download");
+                    newDiv.addClass("float-left border m-1");
+                    newDiv.attr("counter", divClassCtr);
+                    newDiv.append(titleParagraph);
+                    newDiv.append(gifImage);
+                    newDiv.append(ratingParagraph);
+                    newDiv.append(downloadButton);
+                    newDiv.append(downloadGif);
+                    favArray.push(newDiv);
+                    $("#gifBox").append(newDiv);
+    
+                    if(gifResults[i].title === ""){
+                        titleParagraph = $("<p>").text("**No Title Available**");
+                        titleParagraph.addClass("gifTitle pt-2")
+                        newDiv.prepend(titleParagraph);
+                     }
+                }
+    
+                $(".gif").on("click", function() {
+                    var source = $(this).attr("src");
+                    for(var i = 0; i < gifResults.length; i++) {
+                    if(source === gifResults[i].images.fixed_height_still.url){
+                        $(this).attr("src", gifResults[i].images.fixed_height.url);
+                    }
+                    if(source === gifResults[i].images.fixed_height.url){
+                        $(this).attr("src", gifResults[i].images.fixed_height_still.url);
+                    }
+                    }
+                });
+    
+                $(".downloadButton").one("click", function() {
+                    var ctrAttr = $(this).attr("counter");
+                    var favDiv = $("<div>");
+                    var deleteFavButton = $("<button>");
+                    if(favGifs.length > 0){
+                        favGifs.splice(0,1);
+                    }
+                    for(var i=0; i < favArray.length; i++){
+                        if(ctrAttr === favArray[i].attr("counter")){
+                        var copyDiv = favArray[i].clone();
+                        $(copyDiv).attr("id", "animateFavGif");
+                        deleteFavButton.text("X");
+                        deleteFavButton.attr("id", "deleteFavItem");
+                        deleteFavButton.addClass("float-left border-left-0");
+                        favDiv.append(copyDiv);
+                        favDiv.append(deleteFavButton);
+                        favGifs.push(favDiv);
+                        $("#favorites").prepend(favGifs);
+                        }
+                    } 
+                    $("#animateFavGif").on("click", function() {  
+                        console.log($(this));       
+                        var secondNode = $(this.childNodes[2]).attr("src");
+                        var firstNode = $(this.childNodes[1]).attr("src");
+                        for(var i = 0; i < gifResults.length; i++) {
+                        if(firstNode === gifResults[i].images.fixed_height_still.url || secondNode === gifResults[i].images.fixed_height_still.url){
+                            $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height.url);
+                            $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height.url);
+                        }
+                        if(firstNode === gifResults[i].images.fixed_height.url || secondNode === gifResults[i].images.fixed_height.url){
+                            $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
+                            $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height_still.url);
+                        }
+                        }
+                    });
+                    $("#deleteFavItem").on("click", function(){
+                        console.log(this);
+                        favDiv.remove();
+                    });
+                });
+                
+                if(moreGifsArray.length === 0){
+                    moreGifsArray.push(topicName);
+                
+                    } else {
+                        moreGifsArray.splice(0,1);
+                        moreGifsArray.push(topicName);
+                    
+                    }   
+        });
+        
+    });
+}
+}
+
+function remakePetsButtons(){
+    var inputText = $('#sportInput').val().toUpperCase().trim();
+    if(inputText === ""){
+        
+    } else {
+    pets.push(inputText);
+    $('.petsButtons').remove();
+    showPetsButtons();
+   
+   
+    $(".petsButtons").on("click", function() {
+        $("#addMoreButtonRow").show();
         $("#gifBox").empty();
         $("#getStartedText").empty();
         limit = 10;
@@ -302,13 +442,10 @@ function remakeCarsButtons(){
         });
         
     });
-    $('#carsInput').val('');
 }
 }
 
-
-
-
+//-----LOGIC-----//
 addMoreGifsButton();
 $("#addMoreButtonRow").hide();
 $(".form").hide();
@@ -316,8 +453,10 @@ $(".form").hide();
 
 $("#topicSports").on("click", function(){
     $("#topicSports").hide();
-    $(".submitCarsButton").hide();
+    $("#topicCars").hide();
+    $("#topicPets").hide();
     $(".form").show();
+    $("#gifBox").text("Choose a subcategory");
     showSportsButtons();
 
     $(".sportButtons").on("click", function() {
@@ -444,11 +583,11 @@ $("#topicSports").on("click", function(){
 })
 
 $("#topicCars").on("click", function(){
-    $("#topicCars").hide();
     $("#topicSports").hide();
-    $(".submitCarsButton").show();
-    $(".submitSportsButton").hide();
+    $("#topicCars").hide();
+    $("#topicPets").hide();
     $(".form").show();
+    $("#gifBox").text("Choose a subcategory");
     $("#formHeading").text("Add a Car Manufacturer");
     showCarButtons(); 
 
@@ -575,6 +714,137 @@ $("#topicCars").on("click", function(){
     });
 });
 
+$("#topicPets").on("click", function(){
+    $("#topicSports").hide();
+    $("#topicCars").hide();
+    $("#topicPets").hide();
+    $(".form").show();
+    $("#gifBox").text("Choose a subcategory");
+    $("#formHeading").text("Add a Type of Pet");
+    showPetsButtons(); 
+
+    $(".petsButtons").on("click", function() {
+        $("#addMoreButtonRow").show();
+        $("#gifBox").empty();
+        $("#getStartedText").empty();
+        limit = 10;
+        var topicName = $(this).attr("data-name")
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+            topicName + "&api_key=17HlEsY0GKfVxvXvmi1HZw2RI94pGhFc&limit="+ limit;
+    
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+            }).then(function(response) {
+                
+                var gifResults = response.data;
+    
+                for (var i = 0; i < limit; i++) {
+                    divClassCtr++;
+                    favClassCtr++;
+                    var newDiv = $("<div>");
+                    var ratingParagraph = $("<p>").text("Rating: " + gifResults[i].rating);
+                    var downloadButton = $("<button>");
+                    downloadButton.addClass("downloadButton mb-2");
+                    downloadButton.attr("data-name", gifResults[i].title);
+                    downloadButton.attr("counter", favClassCtr);
+                    downloadButton.text("♡");
+                    var titleParagraph = $("<p>").text(gifResults[i].title);
+                    var gifImage = $("<img>");
+                    var downloadGif = $("<a>");
+                    gifImage.addClass("gif");
+                    titleParagraph.addClass("gifTitle pt-2 pr-1")
+                    gifImage.attr("src", gifResults[i].images.fixed_height_still.url);
+                    downloadGif.attr("download");
+                    downloadGif.addClass("ml-3");
+                    downloadGif.attr("target", "_blank");
+                    downloadGif.attr("href", gifResults[i].images.fixed_height.url);
+                    downloadGif.text("download");
+                    newDiv.addClass("float-left border m-1");
+                    newDiv.attr("counter", divClassCtr);
+                    newDiv.append(titleParagraph);
+                    newDiv.append(gifImage);
+                    newDiv.append(ratingParagraph);
+                    newDiv.append(downloadButton);
+                    newDiv.append(downloadGif);
+                    favArray.push(newDiv);
+                    $("#gifBox").append(newDiv);
+    
+                    if(gifResults[i].title === ""){
+                        titleParagraph = $("<p>").text("**No Title Available**");
+                        titleParagraph.addClass("gifTitle pt-2")
+                        newDiv.prepend(titleParagraph);
+                     }
+                }
+                
+                $(".gif").on("click", function() {
+                    var source = $(this).attr("src");
+                    console.log(source);
+                    for(var i = 0; i < gifResults.length; i++) {
+                    if(source === gifResults[i].images.fixed_height_still.url){
+                        $(this).attr("src", gifResults[i].images.fixed_height.url);
+                    }
+                    if(source === gifResults[i].images.fixed_height.url){
+                        $(this).attr("src", gifResults[i].images.fixed_height_still.url);
+                    }
+                    }
+                });
+    
+                $(".downloadButton").one("click", function() {
+                    var ctrAttr = $(this).attr("counter");
+                    var favDiv = $("<div>");
+                    var deleteFavButton = $("<button>");
+                    if(favGifs.length > 0){
+                        favGifs.splice(0,1);
+                    }
+                    for(var i=0; i < favArray.length; i++){
+                        if(ctrAttr === favArray[i].attr("counter")){
+                        var copyDiv = favArray[i].clone();
+                        $(copyDiv).attr("id", "animateFavGif");
+                        deleteFavButton.text("X");
+                        deleteFavButton.attr("id", "deleteFavItem");
+                        deleteFavButton.addClass("float-left border-left-0");
+                        favDiv.append(copyDiv);
+                        favDiv.append(deleteFavButton);
+                        favGifs.push(favDiv);
+                        $("#favorites").prepend(favGifs);
+                        }
+                    } 
+                    $("#animateFavGif").on("click", function() {  
+                        console.log($(this));       
+                        var secondNode = $(this.childNodes[2]).attr("src");
+                        var firstNode = $(this.childNodes[1]).attr("src");
+                        for(var i = 0; i < gifResults.length; i++) {
+                        if(firstNode === gifResults[i].images.fixed_height_still.url || secondNode === gifResults[i].images.fixed_height_still.url){
+                            $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height.url);
+                            $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height.url);
+                        }
+                        if(firstNode === gifResults[i].images.fixed_height.url || secondNode === gifResults[i].images.fixed_height.url){
+                            $(this.childNodes[2]).attr("src", gifResults[i].images.fixed_height_still.url);
+                            $(this.childNodes[1]).attr("src", gifResults[i].images.fixed_height_still.url);
+                        }
+                        }
+                    });
+                    $("#deleteFavItem").on("click", function(){
+                        console.log(this);
+                        favDiv.remove();
+                    });
+                });
+    
+    
+                //code for setting up an array for when we add more gifs to the original 10 
+                if(moreGifsArray.length === 0){
+                moreGifsArray.push(topicName);
+            
+                } else {
+                    moreGifsArray.splice(0,1);
+                    moreGifsArray.push(topicName);
+                
+                }
+                
+            });     
+    });
+});
 
 $(".addMoreGifs").on("click", function() {    
         limit = limit + 10;
@@ -680,13 +950,34 @@ $(".addMoreGifs").on("click", function() {
 $(".submitSportsButton").on("click", function(){
     event.preventDefault();
     
+    if(sports.length > 0){
     remakeSportsButtons();
+    $("#sportInput").val("");
+    } if(cars.length > 0){
+        remakeCarsButtons();
+        $("#sportInput").val("");
+    } if(pets.length > 0){
+        remakePetsButtons();
+        $("#sportInput").val("");
+        
+    }
+  
 });
 
-$(".submitCarsButton").on("click", function(){
-    event.preventDefault();
-    
-    remakeCarsButtons();
+$("#mainMenu").on("click", function(){
+    sports = ["NFL", "NBA", "MLB", "CFB", "WNBA", "NASCAR", "TENNIS", "SOCCER"];
+    cars = ["MERCEDES-BENZ", "AUDI", "TOYOTA", "LEXUS", "FERARI", "FORD"];
+    pets = ["DOG", "CAT", "BIRD", "SNAKE"];
+    console.log(pets);
+    $(".form").hide();
+    $("#gifBox").text("Choose a Category");
+    $(".sportButtons").hide();
+    $(".carButtons").hide();
+    $(".petsButtons").hide();
+    $("#addMoreButtonRow").hide();
+    $("#topicSports").show();
+    $("#topicCars").show();
+    $("#topicPets").show();
 });
  
 });
