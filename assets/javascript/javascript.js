@@ -456,6 +456,7 @@ $("#topicSports").on("click", function(){
     $("#topicCars").hide();
     $("#topicPets").hide();
     $(".form").show();
+    $("#formHeading").text("Add a Sport");
     $("#gifBox").text("Choose a subcategory");
     showSportsButtons();
 
